@@ -1,19 +1,16 @@
 package items
 
-abstract case class Item(){
-}
+import movimientos.Movimiento
+import guerreros.Guerrero
+import estados.Estado
 
-class Arma extends Item{ 
-}
+abstract class Item() extends Movimiento {
 
-class Filosa extends Arma{
-}
+  def afectarAlAtacante(estado: Estado): Unit
 
-class Roma extends Arma{
-}
+  def cumpleCondiciones(estado: Estado): Boolean
 
-class SemillaDelErmitanio extends Item{
+  def afectarAlDefensor(estado: Estado): Unit
+  
+  
 }
-
-/*hay que ver si conviene usar enums, aca se llaman enumeration,
- *no me salio usarlos*/

@@ -2,37 +2,25 @@ package movimientos
 
 import estados.Estado
 import guerreros.Guerrero
-import items.SemillaDelErmitanio
-import guerreros.SuperSaiyajin
-import guerreros.Andriode
+import especie.Saiyajin
+import especie.Androide
 
-class CargarKi() extends Movimiento() {
+case class CargarKi() extends Movimiento() {
 
   def cumpleCondiciones(estado: Estado): Boolean = {
-    estado.atacante match {
-      case _ => true
+    estado.atacante.especie match {
+      case _: Androide => false
+      case _           => true
     }
   }
 
-  def afectarAlAtacante(atacante: Guerrero): Unit = {
-    atacante match {
-      case _: SuperSaiyajin => aumentarKiASuperSaiyajin(atacante.asInstanceOf[SuperSaiyajin])
-      case _: Andriode      => 
-      case _                => aumentarKiAUnGuerreroCualquiera(atacante)
-    }
+  def afectarAlAtacante(estado: Estado): Unit = {
+    estado.atacante.aumentarKi(100)
   }
 
-  def afectarAlDefensor(defensor: Guerrero): Unit = {
-    //no le hace nada al otro
+  def afectarAlDefensor(estado: Estado): Unit = {
   }
 
-  private def aumentarKiASuperSaiyajin(superSaiyajin: SuperSaiyajin): Unit = {
-    superSaiyajin.ki += 150 * superSaiyajin.nivel
-  }
-
-  private def aumentarKiAUnGuerreroCualquiera(atacante: Guerrero): Unit = {
-    atacante.ki += 100
-  }
 }
 
 

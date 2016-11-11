@@ -1,14 +1,24 @@
 package guerreros
 
 import movimientos.Movimiento
-import items.Item
-import potenciadores.Potenciador
+import especie.Especie
+import condiciones.Condicion
 
-class SuperSaiyajin(
-  ki: Int,
-  movimientos: Set[Movimiento],
-  items: Set[Enumeration],
-  potenciadores: Set[Potenciador],
-  var nivel: Int)
-    extends Guerrero(ki, movimientos, items, potenciadores) {
+class SuperSaiyajin(anterior: Guerrero) extends Transformacion(anterior) {
+
+  val nivel: Int = {
+    anterior match {
+      case _: SuperSaiyajin => anterior.asInstanceOf[SuperSaiyajin].nivel + 1
+      case _: Guerrero      => 1
+    }
+  }
+
+  kiMaximo = anterior.kiMaximo * 5 * nivel
+
+  val guerreroBase: Guerrero = {
+    anterior match {
+      case _: SuperSaiyajin => anterior.asInstanceOf[SuperSaiyajin].guerreroBase
+      case _: Guerrero      => anterior
+    }
+  }
 }

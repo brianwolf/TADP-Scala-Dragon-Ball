@@ -3,24 +3,27 @@ package movimientos
 import scala.util.Try
 import guerreros.Guerrero
 import estados.Estado
-import guerreros.Humano
+import especie.Humano
+import condiciones.Condicion
+import condiciones.Muerto
 
-abstract case class Movimiento() {
+abstract class Movimiento() {
 
   def apply(estado: Estado): Estado = {
-    var estadoResultado: Estado = estado.copy()
-    
-    if (cumpleCondiciones(estado)) {
-      afectarAlAtacante(estado.atacante)
-      afectarAlDefensor(estado.defensor)
+
+    if (estado.alguienMurio()) estado
+
+    var estadoResultado = new Estado(estado.atacante.copy(), estado.defensor.copy())
+
+    if (estadoResultado.atacante.sabesEsteMovimiento(this) && cumpleCondiciones(estadoResultado)) {
+      afectarAlAtacante(estadoResultado)
+      afectarAlDefensor(estadoResultado)
     }
-    
-    estadoResultado.defensor.contraAtaca(estadoResultado, this)
+
+    estadoResultado
   }
 
-  /*estos metodos los tienen que sobreescribir todos los que hereden
-   * para agregarles su respectiva funcionalidad*/
   def cumpleCondiciones(estado: Estado): Boolean
-  def afectarAlAtacante(atacante: Guerrero): Unit
-  def afectarAlDefensor(defensor: Guerrero): Unit
+  def afectarAlAtacante(estado: Estado): Unit
+  def afectarAlDefensor(estado: Estado): Unit
 }
