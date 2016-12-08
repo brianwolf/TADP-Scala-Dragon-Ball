@@ -1,5 +1,0 @@
-package potenciadores
-
-class Potenciador {
-  
-}
